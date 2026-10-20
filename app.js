@@ -90,3 +90,74 @@ async function caricaClassifica() {
 // Avvia il caricamento dei dati non appena si apre l'app
 caricaClassifica();
 
+// --- COLLEGAMENTO AL DATABASE (RISULTATI) ---
+
+// INCOLLA IL TUO LINK QUI SOTTO (quello nuovo del foglio Risultati)
+const urlRisultati = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQSgZ0b-6wzTnNRq37OxOvEbVjyW-vNbuxR-sg6rToRvPAcg1NBtVr_54dTh5tmmCbHWDGPWsakZti0/pub?gid=1987827721&single=true&output=csv";
+
+async function caricaRisultati() {
+    try {
+        const response = await fetch(urlRisultati);
+        const data = await response.text();
+        const righe = data.split('\n');
+        
+        const container = document.querySelector('#risultati .match-list');
+        const headerGiornata = document.querySelector('#risultati .matchday-header');
+        
+        let htmlRisultati = "";
+        
+        // Partiamo dalla riga 1 per saltare le intestazioni (A1, B1...)
+        for (let i = 1; i < righe.length; i++) {
+            if (righe[i].trim() === '') continue;
+            
+            const colonne = righe[i].split(',');
+            const giornata = colonne[0];
+            const dataOra = colonne[1];
+            const sqCasa = colonne[2];
+            const golCasa = colonne[3];
+            const sqTrasf = colonne[4];
+            const golTrasf = colonne[5];
+            const stato = colonne[6];
+            
+            // Aggiorna l'intestazione della giornata alla prima riga valida
+            if(i === 1) {
+                headerGiornata.innerText = giornata;
+            }
+
+            // Stessa magia per i loghi automatici!
+            const logoCasa = sqCasa.trim().toLowerCase().replace(/\s+/g, '') + '_logo.png';
+            const logoTrasf = sqTrasf.trim().toLowerCase().replace(/\s+/g, '') + '_logo.png';
+
+            htmlRisultati += `
+                <div class="match-row">
+                    <div class="team team-home">
+                        <img src="img/${logoCasa}" class="team-logo" alt="Casa">
+                        <div class="team-info">
+                            <span class="team-name">${sqCasa.trim()}</span>
+                            <span class="team-score">${golCasa}</span>
+                        </div>
+                    </div>
+                    <div class="match-center">
+                        <i class="fa-solid fa-tv match-icon"></i>
+                        <span class="match-status">${stato}</span>
+                        <span class="match-date">${dataOra}</span>
+                    </div>
+                    <div class="team team-away">
+                        <div class="team-info">
+                            <span class="team-name">${sqTrasf.trim()}</span>
+                            <span class="team-score">${golTrasf}</span>
+                        </div>
+                        <img src="img/${logoTrasf}" class="team-logo" alt="Trasferta">
+                    </div>
+                </div>`;
+        }
+        
+        container.innerHTML = htmlRisultati;
+        
+    } catch (error) {
+        console.error("Errore nel caricamento dei risultati:", error);
+    }
+}
+
+// Avviamo anche i risultati all'apertura dell'app
+caricaRisultati();
