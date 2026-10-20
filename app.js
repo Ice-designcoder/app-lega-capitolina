@@ -161,3 +161,19 @@ async function caricaRisultati() {
 
 // Avviamo anche i risultati all'apertura dell'app
 caricaRisultati();
+
+// Funzione per aprire il modale cliccando sulla partita
+function apriDettagli(casa, trasf) {
+    document.getElementById('modal-title').innerText = `${casa} vs ${trasf}`;
+    document.getElementById('match-modal').style.display = 'block';
+    
+    // Nelle prossime fasi collegheremo un terzo foglio Google per pescare le formazioni reali
+}
+
+// Funzione per chiudere il modale
+function chiudiModale() {
+    document.getElementById('match-modal').style.display = 'none';
+}
+
+// Quando generi l'HTML dei risultati nel fetch, aggiorna il div iniziale della riga così:
+// htmlRisultati += `<div class="match-row" onclick="apriDettagli('${sqCasa.trim()}', '${sqTrasf.trim()}')"> ...`;
