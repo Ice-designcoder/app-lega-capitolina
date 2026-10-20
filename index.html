@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Lega Capitolina</title>
+    <!-- Colleghiamo il nostro file CSS -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Font eleganti e icone -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- L'intestazione fissa in alto -->
+    <header class="app-header">
+        <h1>Lega Capitolina</h1>
+    </header>
+
+    <!-- Il contenitore dove cambieranno le schermate -->
+    <main class="app-content">
+        
+        <!-- Schermata 1: HOME -->
+        <section id="home" class="tab-content active">
+            <h2>Fixtures</h2>
+            <p>Qui metteremo la tua bellissima grafica degli incontri del weekend.</p>
+        </section>
+
+        <!-- Schermata 2: RISULTATI -->
+        <section id="risultati" class="tab-content">
+            <div class="matchday-header">1° Giornata - 11/09/2026</div>
+            <div class="match-list">
+                
+                <!-- Match 1 -->
+                <div class="match-row">
+                    <div class="team team-home">
+                        <img src="img/teambarazzo_logo.png" class="team-logo" alt="Casa">
+                        <div class="team-info">
+                            <span class="team-name">Squadra 1</span>
+                            <span class="team-score">2</span>
+                        </div>
+                    </div>
+                    <div class="match-center">
+                        <i class="fa-solid fa-tv match-icon"></i>
+                        <span class="match-status">Finita</span>
+                        <span class="match-date">ven 11 set - 20:45</span>
+                    </div>
+                    <div class="team team-away">
+                        <div class="team-info">
+                            <span class="team-name">Squadra 2</span>
+                            <span class="team-score">1</span>
+                        </div>
+                        <img src="img/argonauti_logo.png" class="team-logo" alt="Trasferta">
+                    </div>
+                </div>
+
+                <!-- Match 2 -->
+                <div class="match-row">
+                    <div class="team team-home">
+                        <img src="img/vertumnia_logo.png" class="team-logo" alt="Casa">
+                        <div class="team-info">
+                            <span class="team-name">Squadra 3</span>
+                            <span class="team-score">0</span>
+                        </div>
+                    </div>
+                    <div class="match-center">
+                        <i class="fa-solid fa-tv match-icon"></i>
+                        <span class="match-status">Finita</span>
+                        <span class="match-date">sab 12 set - 15:00</span>
+                    </div>
+                    <div class="team team-away">
+                        <div class="team-info">
+                            <span class="team-name">Squadra 4</span>
+                            <span class="team-score">0</span>
+                        </div>
+                        <img src="img/avellinobanfi_logo.png" class="team-logo" alt="Trasferta">
+                    </div>
+                </div>
+
+                <!-- Match 3 -->
+                <div class="match-row">
+                    <div class="team team-home">
+                        <img src="img/astonbirra_logo.png" class="team-logo" alt="Casa">
+                        <div class="team-info">
+                            <span class="team-name">Squadra 5</span>
+                            <span class="team-score">3</span>
+                        </div>
+                    </div>
+                    <div class="match-center">
+                        <i class="fa-solid fa-tv match-icon"></i>
+                        <span class="match-status">Finita</span>
+                        <span class="match-date">sab 12 set - 18:00</span>
+                    </div>
+                    <div class="team team-away">
+                        <div class="team-info">
+                            <span class="team-name">Squadra 6</span>
+                            <span class="team-score">2</span>
+                        </div>
+                        <img src="img/realmadrink_logo.png" class="team-logo" alt="Trasferta">
+                    </div>
+                </div>
+
+                <!-- Match 4 -->
+                <div class="match-row">
+                    <div class="team team-home">
+                        <img src="img/sslazo_logo.png" class="team-logo" alt="Casa">
+                        <div class="team-info">
+                            <span class="team-name">Squadra 7</span>
+                            <span class="team-score">1</span>
+                        </div>
+                    </div>
+                    <div class="match-center">
+                        <i class="fa-solid fa-tv match-icon"></i>
+                        <span class="match-status">Finita</span>
+                        <span class="match-date">dom 13 set - 15:00</span>
+                    </div>
+                    <div class="team team-away">
+                        <div class="team-info">
+                            <span class="team-name">Squadra 8</span>
+                            <span class="team-score">4</span>
+                        </div>
+                        <img src="img/cocacolepalmer_logo.png" class="team-logo" alt="Trasferta">
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Schermata 3: CLASSIFICA -->
+        <section id="classifica" class="tab-content">
+            <div class="matchday-header">Classifica Generale</div>
+            
+            <div class="standings-container">
+                <!-- Intestazione Tabella -->
+                <div class="standings-header">
+                    <div class="col-pos">#</div>
+                    <div class="col-team">Squadra</div>
+                    <div class="col-pt">Pt</div>
+                    <div class="col-gf">GF</div>
+                    <div class="col-gs">GS</div>
+                    <div class="col-dr">DR</div>
+                </div>
+
+                <!-- Riga 1 -->
+                <div class="standings-row">
+                    <div class="col-pos">1</div>
+                    <div class="col-team">
+                        <img src="img/teambarazzo_logo.png" class="team-logo-small" alt="Stemma">
+                        Squadra 8
+                    </div>
+                    <div class="col-pt">3</div>
+                    <div class="col-gf">4</div>
+                    <div class="col-gs">1</div>
+                    <div class="col-dr">+3</div>
+                </div>
+
+                <!-- Riga 2 -->
+                <div class="standings-row">
+                    <div class="col-pos">2</div>
+                    <div class="col-team">
+                        <img src="img/argonauti_logo.png" class="team-logo-small" alt="Stemma">
+                        Squadra 5
+                    </div>
+                    <div class="col-pt">3</div>
+                    <div class="col-gf">3</div>
+                    <div class="col-gs">2</div>
+                    <div class="col-dr">+1</div>
+                </div>
+
+                <!-- Riga 3 -->
+                <div class="standings-row">
+                    <div class="col-pos">3</div>
+                    <div class="col-team">
+                        <img src="img/vertumnia_logo.png" class="team-logo-small" alt="Stemma">
+                        Squadra 1
+                    </div>
+                    <div class="col-pt">3</div>
+                    <div class="col-gf">2</div>
+                    <div class="col-gs">1</div>
+                    <div class="col-dr">+1</div>
+                </div>
+
+                <!-- Riga 4 -->
+                <div class="standings-row">
+                    <div class="col-pos">4</div>
+                    <div class="col-team">
+                        <img src="img/avellinobanfi_logo.png" class="team-logo-small" alt="Stemma">
+                        Squadra 3
+                    </div>
+                    <div class="col-pt">1</div>
+                    <div class="col-gf">0</div>
+                    <div class="col-gs">0</div>
+                    <div class="col-dr">0</div>
+                </div>
+
+                <!-- Riga 5 -->
+                <div class="standings-row">
+                    <div class="col-pos">5</div>
+                    <div class="col-team">
+                        <img src="img/astonbirra_logo.png" class="team-logo-small" alt="Stemma">
+                        Squadra 4
+                    </div>
+                    <div class="col-pt">1</div>
+                    <div class="col-gf">0</div>
+                    <div class="col-gs">0</div>
+                    <div class="col-dr">0</div>
+                </div>
+
+                <!-- Riga 6 -->
+                <div class="standings-row">
+                    <div class="col-pos">6</div>
+                    <div class="col-team">
+                        <img src="img/realmadrink_logo.png" class="team-logo-small" alt="Stemma">
+                        Squadra 6
+                    </div>
+                    <div class="col-pt">0</div>
+                    <div class="col-gf">2</div>
+                    <div class="col-gs">3</div>
+                    <div class="col-dr">-1</div>
+                </div>
+
+                <!-- Riga 7 -->
+                <div class="standings-row">
+                    <div class="col-pos">7</div>
+                    <div class="col-team">
+                        <img src="img/sslazo_logo.png" class="team-logo-small" alt="Stemma">
+                        Squadra 2
+                    </div>
+                    <div class="col-pt">0</div>
+                    <div class="col-gf">1</div>
+                    <div class="col-gs">2</div>
+                    <div class="col-dr">-1</div>
+                </div>
+
+                <!-- Riga 8 -->
+                <div class="standings-row">
+                    <div class="col-pos">8</div>
+                    <div class="col-team">
+                        <img src="img/cocacolepalmer_logo.png" class="team-logo-small" alt="Stemma">
+                        Squadra 7
+                    </div>
+                    <div class="col-pt">0</div>
+                    <div class="col-gf">1</div>
+                    <div class="col-gs">4</div>
+                    <div class="col-dr">-3</div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Schermata 4: STATISTICHE -->
+        <section id="statistiche" class="tab-content">
+            <h2>Marcatori</h2>
+            <p>Qui la classifica bomber.</p>
+        </section>
+
+    </main>
+
+    <!-- La barra di navigazione fissa in basso (stile Tutto il Calcio) -->
+    <nav class="bottom-nav">
+        <button class="nav-btn active" onclick="cambiaTab('home', this)">
+            <i class="fa-solid fa-house"></i>
+            <span>Home</span>
+        </button>
+        <button class="nav-btn" onclick="cambiaTab('risultati', this)">
+            <i class="fa-solid fa-futbol"></i>
+            <span>Risultati</span>
+        </button>
+        <button class="nav-btn" onclick="cambiaTab('classifica', this)">
+            <i class="fa-solid fa-list-ol"></i>
+            <span>Classifica</span>
+        </button>
+        <button class="nav-btn" onclick="cambiaTab('statistiche', this)">
+            <i class="fa-solid fa-chart-simple"></i>
+            <span>Stats</span>
+        </button>
+    </nav>
+
+    <!-- Colleghiamo il file JavaScript -->
+    <script src="app.js"></script>
+</body>
+</html>
