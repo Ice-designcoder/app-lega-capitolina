@@ -278,5 +278,32 @@
 
     <!-- Colleghiamo il file JavaScript -->
     <script src="app.js"></script>
+    <!-- Sostituisci l'attuale <div class="matchday-header"> con questo: -->
+<div class="matchday-header">
+    <select id="giornata-selector" onchange="filtraGiornata()">
+        <option value="1">1° Giornata</option>
+        <option value="2">2° Giornata</option>
+        <option value="3">3° Giornata</option>
+        <option value="4" selected>4° Giornata</option>
+    </select>
+</div>
+
+<!-- Aggiungi questo in fondo al file, PRIMA di <script src="app.js"></script> -->
+<div id="match-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="chiudiModale()">&times;</span>
+        <h3 id="modal-title">Dettagli Partita</h3>
+        <div class="formazioni-container">
+            <div class="formazione-casa" id="formazione-casa">
+                <p>Osimhen <i class="fa-solid fa-futbol text-success"></i></p>
+                <p>Barella <i class="fa-solid fa-square text-warning"></i></p>
+            </div>
+            <div class="formazione-trasferta" id="formazione-trasf">
+                <p>Leao <i class="fa-solid fa-square text-danger"></i></p>
+                <p>Dimarco</p>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
