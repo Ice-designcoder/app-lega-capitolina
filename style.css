@@ -207,8 +207,8 @@ body {
 }
 
 .team-logo {
-    width: 28px; /* Loghi piccolini ed eleganti */
-    height: 28px;
+    width: 50px; /* Loghi piccolini ed eleganti */
+    height: 40px;
     object-fit: contain;
 }
 
