@@ -1,4 +1,6 @@
-// 1. FUNZIONE PER CAMBIARE LE SCHERMATE DAL MENU IN BASSO
+// ==========================================
+// 1. MOTORE DEI BOTTONI IN BASSO (TAB)
+// ==========================================
 function cambiaTab(tabId, bottoneCliccato) {
     const schermate = document.querySelectorAll('.tab-content');
     schermate.forEach(schermata => {
@@ -14,8 +16,10 @@ function cambiaTab(tabId, bottoneCliccato) {
     bottoneCliccato.classList.add('active');
 }
 
+// ==========================================
 // 2. COLLEGAMENTO DATABASE: CLASSIFICA
-const urlClassifica = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQSgZ0b-6wzTnNRq37OxOvEbVjyW-vNbuxR-sg6rToRvPAcg1NBtVr_54dTh5tmmCbHWDGPWsakZti0/pub?gid=0&single=true&output=csv"; // <--- RIMETTI IL LINK QUI
+// ==========================================
+const urlClassifica = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQSgZ0b-6wzTnNRq37OxOvEbVjyW-vNbuxR-sg6rToRvPAcg1NBtVr_54dTh5tmmCbHWDGPWsakZti0/pub?gid=0&single=true&output=csv";
 
 async function caricaClassifica() {
     try {
@@ -59,15 +63,17 @@ async function caricaClassifica() {
                     <div class="col-dr">${dr}</div>
                 </div>`;
         }
-        container.innerHTML = htmlClassifica;
+        if(container) container.innerHTML = htmlClassifica;
     } catch (error) {
         console.error("Errore nel caricamento della classifica:", error);
     }
 }
 caricaClassifica();
 
-// --- 3. COLLEGAMENTO DATABASE: RISULTATI (CON SWIPE E TENDINA) ---
-const urlRisultati = "INCOLLA_QUI_IL_TUO_LINK_RISULTATI"; // <--- RIMETTI IL LINK CSV QUI
+// ==========================================
+// 3. COLLEGAMENTO DATABASE: RISULTATI E GIORNATE
+// ==========================================
+const urlRisultati = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQSgZ0b-6wzTnNRq37OxOvEbVjyW-vNbuxR-sg6rToRvPAcg1NBtVr_54dTh5tmmCbHWDGPWsakZti0/pub?gid=1987827721&single=true&output=csv";
 
 let tutteLePartite = [];
 let giornateDisponibili = [];
@@ -102,25 +108,24 @@ async function caricaRisultati() {
             
             tutteLePartite.push(partita);
             
-            // Crea un array con i nomi di tutte le giornate, senza doppioni
             if (!giornateDisponibili.includes(partita.giornata)) {
                 giornateDisponibili.push(partita.giornata);
             }
         }
         
-        // Costruisce la tendina in automatico
         const selector = document.getElementById('giornata-selector');
-        selector.innerHTML = "";
-        giornateDisponibili.forEach((g, index) => {
-            let option = document.createElement('option');
-            option.value = index;
-            option.text = g;
-            selector.appendChild(option);
-        });
-        
-        // Imposta l'ultima giornata giocata come predefinita
-        indiceGiornataAttuale = giornateDisponibili.length - 1;
-        selector.value = indiceGiornataAttuale;
+        if(selector) {
+            selector.innerHTML = "";
+            giornateDisponibili.forEach((g, index) => {
+                let option = document.createElement('option');
+                option.value = index;
+                option.text = g;
+                selector.appendChild(option);
+            });
+            
+            indiceGiornataAttuale = giornateDisponibili.length - 1;
+            selector.value = indiceGiornataAttuale;
+        }
         
         mostraGiornata(indiceGiornataAttuale);
         
@@ -130,6 +135,7 @@ async function caricaRisultati() {
 }
 
 function mostraGiornata(indice) {
+    if(giornateDisponibili.length === 0) return;
     const nomeGiornata = giornateDisponibili[indice];
     const partiteGiornata = tutteLePartite.filter(p => p.giornata === nomeGiornata);
     
@@ -140,7 +146,6 @@ function mostraGiornata(indice) {
         const logoCasa = p.sqCasa.trim().toLowerCase().replace(/\s+/g, '') + '_logo.png';
         const logoTrasf = p.sqTrasf.trim().toLowerCase().replace(/\s+/g, '') + '_logo.png';
 
-        // Passiamo l'indice (i) per far sapere al modale quale partita è stata cliccata
         htmlRisultati += `
             <div class="match-row" onclick="apriDettagli(${indice}, ${i})">
                 <div class="team team-home">
@@ -165,11 +170,16 @@ function mostraGiornata(indice) {
             </div>`;
     });
     
-    container.innerHTML = htmlRisultati;
-    document.getElementById('giornata-selector').value = indice;
+    if(container) container.innerHTML = htmlRisultati;
+    const selector = document.getElementById('giornata-selector');
+    if(selector) selector.value = indice;
 }
 
-// 4. FUNZIONI MODALE, TENDINA E SWIPE (SCORRIMENTO)
+caricaRisultati();
+
+// ==========================================
+// 4. FUNZIONI MODALE, TENDINA E SWIPE
+// ==========================================
 function filtraGiornata() {
     const selector = document.getElementById('giornata-selector');
     indiceGiornataAttuale = parseInt(selector.value);
@@ -185,7 +195,6 @@ function apriDettagli(indiceGiornata, indicePartita) {
     document.getElementById('modal-pt-casa').innerText = p.ptCasa ? p.ptCasa : "-";
     document.getElementById('modal-pt-trasf').innerText = p.ptTrasf ? p.ptTrasf : "-";
     
-    // Converte la lista separata da virgole in paragrafi HTML
     const formattaEventi = (testo) => testo.split(',').map(e => `<p style="margin:5px 0;">${e.trim()}</p>`).join('');
     
     document.getElementById('modal-eventi-casa').innerHTML = formattaEventi(p.evCasa);
@@ -198,48 +207,32 @@ function chiudiModale() {
     document.getElementById('match-modal').style.display = 'none';
 }
 
-// L'intelligenza per lo Swipe col dito
 let touchstartX = 0;
 let touchendX = 0;
-
 const risultatiSection = document.getElementById('risultati');
 
-risultatiSection.addEventListener('touchstart', e => {
-    touchstartX = e.changedTouches[0].screenX;
-});
+if(risultatiSection) {
+    risultatiSection.addEventListener('touchstart', e => {
+        touchstartX = e.changedTouches[0].screenX;
+    });
 
-risultatiSection.addEventListener('touchend', e => {
-    touchendX = e.changedTouches[0].screenX;
-    gestisciSwipe();
-});
+    risultatiSection.addEventListener('touchend', e => {
+        touchendX = e.changedTouches[0].screenX;
+        gestisciSwipe();
+    });
+}
 
 function gestisciSwipe() {
     if (touchendX < touchstartX - 50) {
-        // Swipe verso sinistra (Giornata Successiva)
         if (indiceGiornataAttuale < giornateDisponibili.length - 1) {
             indiceGiornataAttuale++;
             mostraGiornata(indiceGiornataAttuale);
         }
     }
     if (touchendX > touchstartX + 50) {
-        // Swipe verso destra (Giornata Precedente)
         if (indiceGiornataAttuale > 0) {
             indiceGiornataAttuale--;
             mostraGiornata(indiceGiornataAttuale);
         }
     }
-}
-
-caricaRisultati();
-}
-
-function chiudiModale() {
-    // Nasconde il popup quando clicchi sulla "X"
-    document.getElementById('match-modal').style.display = 'none';
-}
-
-function filtraGiornata() {
-    // Questa funzione la prepareremo dopo per far funzionare il menu a tendina
-    const selector = document.getElementById('giornata-selector');
-    console.log("Hai selezionato la giornata: " + selector.value);
 }
