@@ -240,7 +240,7 @@ function gestisciSwipe() {
 // ==========================================
 // 5. COLLEGAMENTO DATABASE: STATISTICHE (MULTI-COLONNA)
 // ==========================================
-const urlStatistiche = "INCOLLA_QUI_IL_TUO_LINK_STATISTICHE";
+const urlStatistiche = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQSgZ0b-6wzTnNRq37OxOvEbVjyW-vNbuxR-sg6rToRvPAcg1NBtVr_54dTh5tmmCbHWDGPWsakZti0/pub?gid=2118793780&single=true&output=csv";
 
 async function caricaStatistiche() {
     try {
