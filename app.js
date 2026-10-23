@@ -238,10 +238,9 @@ function gestisciSwipe() {
 }
 
 // ==========================================
-// 5. COLLEGAMENTO DATABASE: STATISTICHE
+// 5. COLLEGAMENTO DATABASE: STATISTICHE (MULTI-COLONNA)
 // ==========================================
-// INCOLLA IL TUO LINK QUI SOTTO (quello nuovo del foglio Statistiche)
-const urlStatistiche = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQSgZ0b-6wzTnNRq37OxOvEbVjyW-vNbuxR-sg6rToRvPAcg1NBtVr_54dTh5tmmCbHWDGPWsakZti0/pub?gid=2118793780&single=true&output=csv";
+const urlStatistiche = "INCOLLA_QUI_IL_TUO_LINK_STATISTICHE";
 
 async function caricaStatistiche() {
     try {
@@ -249,38 +248,47 @@ async function caricaStatistiche() {
         const data = await response.text();
         const righe = data.split('\n');
         
-        const container = document.getElementById('marcatori-list');
-        
-        let htmlStats = `
-            <div class="standings-header">
-                <div style="width: 15%; text-align: center;">#</div>
-                <div style="flex: 1;">Giocatore</div>
-                <div style="flex: 1;">Squadra</div>
-                <div style="width: 15%; text-align: center;">Gol</div>
-            </div>`;
+        const container = document.getElementById('stats-container');
+        let htmlStats = "";
 
-        for (let i = 1; i < righe.length; i++) {
-            if (righe[i].trim() === '') continue;
-            const colonne = righe[i].split(',');
-            
-            const pos = colonne[0];
-            const giocatore = colonne[1];
-            const squadra = colonne[2];
-            const gol = colonne[3];
-            
-            // Magia dei loghi automatici anche per i marcatori!
-            const nomeLogo = squadra.trim().toLowerCase().replace(/\s+/g, '') + '_logo.png';
+        if (righe.length > 0) {
+            // Prende la prima riga (i titoli come "Marcatori ⚽", "Assist 👟")
+            const headers = righe[0].split(',');
 
-            htmlStats += `
-                <div class="standings-row">
-                    <div style="width: 15%; text-align: center; font-weight: bold; color: #555;">${pos}</div>
-                    <div style="flex: 1; font-weight: 800; color: #1a1a24;">${giocatore.trim()}</div>
-                    <div style="flex: 1; display: flex; align-items: center; gap: 8px; font-size: 0.80rem; color: #777;">
-                        <img src="img/${nomeLogo}" class="team-logo-small" alt="Stemma">
-                        ${squadra.trim()}
-                    </div>
-                    <div style="width: 15%; text-align: center; font-weight: 800; color: #8b0000; font-size: 1.1rem;">${gol}</div>
-                </div>`;
+            // Crea un riquadro per ogni colonna trovata
+            for (let c = 0; c < headers.length; c++) {
+                const titoloCategoria = headers[c] ? headers[c].trim() : "";
+                if (!titoloCategoria) continue; 
+
+                htmlStats += `
+                    <div class="stat-card">
+                        <div class="stat-header">${titoloCategoria}</div>`;
+
+                // Scorre i giocatori sotto quel titolo
+                for (let r = 1; r < righe.length; r++) {
+                    if (righe[r].trim() === '') continue;
+                    const colonne = righe[r].split(',');
+                    let cella = colonne[c] ? colonne[c].trim() : "";
+
+                    if (cella !== "") {
+                        // Separa il nome dal numero (Es. "Mastantuono 3" -> Nome: "Mastantuono", Numero: "3")
+                        let nome = cella;
+                        let numero = "";
+                        const match = cella.match(/^(.*?)\s+(\d+)$/);
+                        if (match) {
+                            nome = match[1];
+                            numero = match[2];
+                        }
+
+                        htmlStats += `
+                            <div class="stat-row">
+                                <span class="stat-player">${nome}</span>
+                                <span class="stat-value">${numero}</span>
+                            </div>`;
+                    }
+                }
+                htmlStats += `</div>`;
+            }
         }
         
         if(container) container.innerHTML = htmlStats;

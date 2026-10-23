@@ -309,3 +309,51 @@ body {
 
 /* Cursore per rendere cliccabili le partite */
 .match-row { cursor: pointer; }
+
+/* --- SEZIONE STATISTICHE (A CARD) --- */
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* Impagina in una singola colonna per telefono */
+    gap: 15px;
+    padding: 15px;
+}
+
+.stat-card {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    padding: 15px;
+}
+
+.stat-header {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #1a1a24;
+    border-bottom: 2px solid #f4f5f7;
+    padding-bottom: 8px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #f9f9f9;
+}
+
+.stat-row:last-child {
+    border-bottom: none;
+}
+
+.stat-player {
+    font-weight: 600;
+    color: #444;
+    font-size: 0.95rem;
+}
+
+.stat-value {
+    font-weight: 800;
+    color: #8b0000;
+    font-size: 1rem;
+}
