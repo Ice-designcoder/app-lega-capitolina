@@ -17,9 +17,46 @@ function cambiaTab(tabId, bottoneCliccato) {
 }
 
 // ==========================================
+// LETTORE CSV CORAZZATO (Usato per Risultati e Statistiche)
+// ==========================================
+function leggiCSV(testo) {
+    testo = testo.replace(/\r/g, '');
+    let righe = [];
+    let rigaAttuale = [];
+    let valoreAttuale = "";
+    let dentroVirgolette = false;
+
+    for (let i = 0; i < testo.length; i++) {
+        let char = testo[i];
+        if (char === '"') {
+            if (dentroVirgolette && testo[i + 1] === '"') {
+                valoreAttuale += '"'; i++;
+            } else {
+                dentroVirgolette = !dentroVirgolette;
+            }
+        } else if (char === ',' && !dentroVirgolette) {
+            rigaAttuale.push(valoreAttuale);
+            valoreAttuale = "";
+        } else if (char === '\n' && !dentroVirgolette) {
+            rigaAttuale.push(valoreAttuale);
+            righe.push(rigaAttuale);
+            rigaAttuale = [];
+            valoreAttuale = "";
+        } else {
+            valoreAttuale += char;
+        }
+    }
+    if (rigaAttuale.length > 0 || valoreAttuale !== "") {
+        rigaAttuale.push(valoreAttuale);
+        righe.push(rigaAttuale);
+    }
+    return righe;
+}
+
+// ==========================================
 // 2. COLLEGAMENTO DATABASE: CLASSIFICA
 // ==========================================
-const urlClassifica = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQSgZ0b-6wzTnNRq37OxOvEbVjyW-vNbuxR-sg6rToRvPAcg1NBtVr_54dTh5tmmCbHWDGPWsakZti0/pub?gid=0&single=true&output=csv";
+const urlClassifica = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQSgZ0b-6wzTnNRq37OxOvEbVjyW-vNbuxR-sg6rToRvPAcg1NBtVr_54dTh5tmmCbHWDGPWsakZti0/pub?gid=0&single=true&output=csv"; // <--- 1. LINK CLASSIFICA
 
 async function caricaClassifica() {
     try {
@@ -65,15 +102,15 @@ async function caricaClassifica() {
         }
         if(container) container.innerHTML = htmlClassifica;
     } catch (error) {
-        console.error("Errore nel caricamento della classifica:", error);
+        console.error("Errore classifica:", error);
     }
 }
 caricaClassifica();
 
 // ==========================================
-// 3. COLLEGAMENTO DATABASE: RISULTATI E GIORNATE
+// 3. COLLEGAMENTO DATABASE: RISULTATI
 // ==========================================
-const urlRisultati = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQSgZ0b-6wzTnNRq37OxOvEbVjyW-vNbuxR-sg6rToRvPAcg1NBtVr_54dTh5tmmCbHWDGPWsakZti0/pub?gid=1987827721&single=true&output=csv";
+const urlRisultati = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQSgZ0b-6wzTnNRq37OxOvEbVjyW-vNbuxR-sg6rToRvPAcg1NBtVr_54dTh5tmmCbHWDGPWsakZti0/pub?gid=1987827721&single=true&output=csv"; // <--- 2. LINK RISULTATI
 
 let tutteLePartite = [];
 let giornateDisponibili = [];
@@ -83,31 +120,32 @@ async function caricaRisultati() {
     try {
         const response = await fetch(urlRisultati);
         const data = await response.text();
-        const righe = data.split('\n');
+        const righe = leggiCSV(data);
         
         tutteLePartite = [];
         giornateDisponibili = [];
         
         for (let i = 1; i < righe.length; i++) {
-            if (righe[i].trim() === '') continue;
-            const colonne = righe[i].split(',');
+            if (!righe[i] || righe[i].length < 2) continue;
+            const colonne = righe[i];
             
             const partita = {
-                giornata: colonne[0],
-                dataOra: colonne[1],
-                sqCasa: colonne[2],
-                golCasa: colonne[3],
-                sqTrasf: colonne[4],
-                golTrasf: colonne[5],
-                stato: colonne[6],
-                ptCasa: colonne[7] || "",
-                evCasa: colonne[8] || "",
-                ptTrasf: colonne[9] || "",
-                evTrasf: colonne[10] || ""
+                giornata: colonne[0] ? colonne[0].trim() : "",
+                dataOra: colonne[1] ? colonne[1].trim() : "",
+                sqCasa: colonne[2] ? colonne[2].trim() : "",
+                golCasa: colonne[3] ? colonne[3].trim() : "",
+                sqTrasf: colonne[4] ? colonne[4].trim() : "",
+                golTrasf: colonne[5] ? colonne[5].trim() : "",
+                stato: colonne[6] ? colonne[6].trim() : "",
+                ptCasa: colonne[7] ? colonne[7].trim() : "",
+                evCasa: colonne[8] ? colonne[8].trim() : "",
+                ptTrasf: colonne[9] ? colonne[9].trim() : "",
+                evTrasf: colonne[10] ? colonne[10].trim() : ""
             };
             
+            if (partita.giornata === "") continue;
+
             tutteLePartite.push(partita);
-            
             if (!giornateDisponibili.includes(partita.giornata)) {
                 giornateDisponibili.push(partita.giornata);
             }
@@ -122,15 +160,12 @@ async function caricaRisultati() {
                 option.text = g;
                 selector.appendChild(option);
             });
-            
             indiceGiornataAttuale = giornateDisponibili.length - 1;
             selector.value = indiceGiornataAttuale;
         }
-        
         mostraGiornata(indiceGiornataAttuale);
-        
     } catch (error) {
-        console.error("Errore nel caricamento dei risultati:", error);
+        console.error("Errore risultati:", error);
     }
 }
 
@@ -174,11 +209,10 @@ function mostraGiornata(indice) {
     const selector = document.getElementById('giornata-selector');
     if(selector) selector.value = indice;
 }
-
 caricaRisultati();
 
 // ==========================================
-// 4. FUNZIONI MODALE, TENDINA E SWIPE
+// 4. FUNZIONI MODALE E FILTRI (RISULTATI)
 // ==========================================
 function filtraGiornata() {
     const selector = document.getElementById('giornata-selector');
@@ -195,11 +229,13 @@ function apriDettagli(indiceGiornata, indicePartita) {
     document.getElementById('modal-pt-casa').innerText = p.ptCasa ? p.ptCasa : "-";
     document.getElementById('modal-pt-trasf').innerText = p.ptTrasf ? p.ptTrasf : "-";
     
-    const formattaEventi = (testo) => testo.split(',').map(e => `<p style="margin:5px 0;">${e.trim()}</p>`).join('');
+    const formattaEventi = (testo) => {
+        if (!testo) return "";
+        return testo.split('\n').map(e => `<p style="margin:5px 0;">${e.trim()}</p>`).join('');
+    };
     
     document.getElementById('modal-eventi-casa').innerHTML = formattaEventi(p.evCasa);
     document.getElementById('modal-eventi-trasf').innerHTML = formattaEventi(p.evTrasf);
-    
     document.getElementById('match-modal').style.display = 'block';
 }
 
@@ -215,7 +251,6 @@ if(risultatiSection) {
     risultatiSection.addEventListener('touchstart', e => {
         touchstartX = e.changedTouches[0].screenX;
     });
-
     risultatiSection.addEventListener('touchend', e => {
         touchendX = e.changedTouches[0].screenX;
         gestisciSwipe();
@@ -238,32 +273,25 @@ function gestisciSwipe() {
 }
 
 // ==========================================
-// 5. COLLEGAMENTO DATABASE: STATISTICHE (CON LOGHI DINAMICI)
+// 5. COLLEGAMENTO DATABASE: STATISTICHE
 // ==========================================
-const urlStatistiche = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQSgZ0b-6wzTnNRq37OxOvEbVjyW-vNbuxR-sg6rToRvPAcg1NBtVr_54dTh5tmmCbHWDGPWsakZti0/pub?gid=2118793780&single=true&output=csv"; // <-- RIMETTI IL LINK
+const urlStatistiche = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQSgZ0b-6wzTnNRq37OxOvEbVjyW-vNbuxR-sg6rToRvPAcg1NBtVr_54dTh5tmmCbHWDGPWsakZti0/pub?gid=2118793780&single=true&output=csv"; // <--- 3. LINK STATISTICHE
 
 async function caricaStatistiche() {
     try {
         const response = await fetch(urlStatistiche);
         const data = await response.text();
-        
-        // Usiamo il lettore CSV corazzato
         const righe = leggiCSV(data);
-        
         const container = document.getElementById('stats-container');
         let htmlStats = "";
 
         if (righe.length > 0) {
             const headers = righe[0];
 
-            // Scorriamo le colonne. Avanziamo in base alla presenza della colonna "Squadra"
             for (let c = 0; c < headers.length; c++) {
                 const titoloCategoria = headers[c] ? headers[c].trim() : "";
-                
-                // Se la colonna si chiama "Squadra", la saltiamo perché la elaboriamo insieme alla statistica
                 if (!titoloCategoria || titoloCategoria.toLowerCase().includes('squadra')) continue; 
 
-                // Controlliamo se la colonna a destra si chiama "Squadra"
                 let hasSquadraCol = (c + 1 < headers.length && headers[c+1] && headers[c+1].trim().toLowerCase().includes('squadra'));
 
                 htmlStats += `
@@ -276,7 +304,6 @@ async function caricaStatistiche() {
                     let cellaStat = righe[r][c] ? righe[r][c].trim() : "";
                     if (cellaStat === "") continue;
 
-                    // Separiamo nome giocatore e numero (es. "Raimondo 3" -> "Raimondo" e "3")
                     let nome = cellaStat;
                     let numero = "";
                     const match = cellaStat.match(/^(.*?)\s+(\d+(?:\.\d+)?)$/);
@@ -285,7 +312,6 @@ async function caricaStatistiche() {
                         numero = match[2];
                     }
 
-                    // Se c'è la colonna "Squadra" accanto, ne prendiamo il valore
                     let squadra = "";
                     if (hasSquadraCol && righe[r].length > c + 1) {
                         squadra = righe[r][c+1] ? righe[r][c+1].trim() : "";
@@ -297,7 +323,6 @@ async function caricaStatistiche() {
                         logoHtml = `<img src="img/${nomeLogo}" alt="${squadra}" style="width: 25px; height: 25px; object-fit: contain;">`;
                     }
 
-                    // Impaginazione: Giocatore (Sinistra) - Logo (Centro) - Numero (Destra)
                     htmlStats += `
                         <div class="stat-row" style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f9f9f9;">
                             <span class="stat-player" style="font-weight: 600; color: #444; font-size: 1rem; flex: 1;">${nome}</span>
@@ -309,18 +334,14 @@ async function caricaStatistiche() {
                 }
                 htmlStats += `</div>`;
                 
-                // Se abbiamo processato anche la colonna Squadra, diciamo al ciclo di fare un salto in più
                 if (hasSquadraCol) {
                     c++;
                 }
             }
         }
-        
         if(container) container.innerHTML = htmlStats;
-        
     } catch (error) {
-        console.error("Errore nel caricamento delle statistiche:", error);
+        console.error("Errore statistiche:", error);
     }
 }
-
 caricaStatistiche();
