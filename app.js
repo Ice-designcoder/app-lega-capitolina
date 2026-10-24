@@ -238,56 +238,81 @@ function gestisciSwipe() {
 }
 
 // ==========================================
-// 5. COLLEGAMENTO DATABASE: STATISTICHE (MULTI-COLONNA)
+// 5. COLLEGAMENTO DATABASE: STATISTICHE (CON LOGHI DINAMICI)
 // ==========================================
-const urlStatistiche = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQSgZ0b-6wzTnNRq37OxOvEbVjyW-vNbuxR-sg6rToRvPAcg1NBtVr_54dTh5tmmCbHWDGPWsakZti0/pub?gid=2118793780&single=true&output=csv";
+const urlStatistiche = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQSgZ0b-6wzTnNRq37OxOvEbVjyW-vNbuxR-sg6rToRvPAcg1NBtVr_54dTh5tmmCbHWDGPWsakZti0/pub?gid=2118793780&single=true&output=csv"; // <-- RIMETTI IL LINK
 
 async function caricaStatistiche() {
     try {
         const response = await fetch(urlStatistiche);
         const data = await response.text();
-        const righe = data.split('\n');
+        
+        // Usiamo il lettore CSV corazzato
+        const righe = leggiCSV(data);
         
         const container = document.getElementById('stats-container');
         let htmlStats = "";
 
         if (righe.length > 0) {
-            // Prende la prima riga (i titoli come "Marcatori ⚽", "Assist 👟")
-            const headers = righe[0].split(',');
+            const headers = righe[0];
 
-            // Crea un riquadro per ogni colonna trovata
+            // Scorriamo le colonne. Avanziamo in base alla presenza della colonna "Squadra"
             for (let c = 0; c < headers.length; c++) {
                 const titoloCategoria = headers[c] ? headers[c].trim() : "";
-                if (!titoloCategoria) continue; 
+                
+                // Se la colonna si chiama "Squadra", la saltiamo perché la elaboriamo insieme alla statistica
+                if (!titoloCategoria || titoloCategoria.toLowerCase().includes('squadra')) continue; 
+
+                // Controlliamo se la colonna a destra si chiama "Squadra"
+                let hasSquadraCol = (c + 1 < headers.length && headers[c+1] && headers[c+1].trim().toLowerCase().includes('squadra'));
 
                 htmlStats += `
                     <div class="stat-card">
                         <div class="stat-header">${titoloCategoria}</div>`;
 
-                // Scorre i giocatori sotto quel titolo
                 for (let r = 1; r < righe.length; r++) {
-                    if (righe[r].trim() === '') continue;
-                    const colonne = righe[r].split(',');
-                    let cella = colonne[c] ? colonne[c].trim() : "";
+                    if (!righe[r] || righe[r].length <= c) continue;
+                    
+                    let cellaStat = righe[r][c] ? righe[r][c].trim() : "";
+                    if (cellaStat === "") continue;
 
-                    if (cella !== "") {
-                        // Separa il nome dal numero (Es. "Mastantuono 3" -> Nome: "Mastantuono", Numero: "3")
-                        let nome = cella;
-                        let numero = "";
-                        const match = cella.match(/^(.*?)\s+(\d+)$/);
-                        if (match) {
-                            nome = match[1];
-                            numero = match[2];
-                        }
-
-                        htmlStats += `
-                            <div class="stat-row">
-                                <span class="stat-player">${nome}</span>
-                                <span class="stat-value">${numero}</span>
-                            </div>`;
+                    // Separiamo nome giocatore e numero (es. "Raimondo 3" -> "Raimondo" e "3")
+                    let nome = cellaStat;
+                    let numero = "";
+                    const match = cellaStat.match(/^(.*?)\s+(\d+(?:\.\d+)?)$/);
+                    if (match) {
+                        nome = match[1];
+                        numero = match[2];
                     }
+
+                    // Se c'è la colonna "Squadra" accanto, ne prendiamo il valore
+                    let squadra = "";
+                    if (hasSquadraCol && righe[r].length > c + 1) {
+                        squadra = righe[r][c+1] ? righe[r][c+1].trim() : "";
+                    }
+
+                    let logoHtml = "";
+                    if (squadra !== "") {
+                        const nomeLogo = squadra.toLowerCase().replace(/\s+/g, '') + '_logo.png';
+                        logoHtml = `<img src="img/${nomeLogo}" alt="${squadra}" style="width: 25px; height: 25px; object-fit: contain;">`;
+                    }
+
+                    // Impaginazione: Giocatore (Sinistra) - Logo (Centro) - Numero (Destra)
+                    htmlStats += `
+                        <div class="stat-row" style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f9f9f9;">
+                            <span class="stat-player" style="font-weight: 600; color: #444; font-size: 1rem; flex: 1;">${nome}</span>
+                            <div style="display: flex; align-items: center; justify-content: flex-end; gap: 15px; width: 80px;">
+                                ${logoHtml}
+                                <span class="stat-value" style="font-weight: 800; color: #8b0000; font-size: 1.1rem; width: 25px; text-align: right;">${numero}</span>
+                            </div>
+                        </div>`;
                 }
                 htmlStats += `</div>`;
+                
+                // Se abbiamo processato anche la colonna Squadra, diciamo al ciclo di fare un salto in più
+                if (hasSquadraCol) {
+                    c++;
+                }
             }
         }
         
