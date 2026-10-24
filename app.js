@@ -323,14 +323,15 @@ async function caricaStatistiche() {
                         logoHtml = `<img src="img/${nomeLogo}?v=2" alt="${squadra}" style="width: 25px; height: 25px; object-fit: contain;">`;
                     }
 
-                    htmlStats += `
-                        <div class="stat-row" style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f9f9f9;">
-                            <span class="stat-player" style="font-weight: 600; color: #444; font-size: 1rem; flex: 1;">${nome}</span>
-                            <div style="display: flex; align-items: center; justify-content: flex-end; gap: 15px; width: 80px;">
-                                ${logoHtml}
-                                <span class="stat-value" style="font-weight: 800; color: #8b0000; font-size: 1.1rem; width: 25px; text-align: right;">${numero}</span>
-                            </div>
-                        </div>`;
+                    // Impaginazione: Giocatore + Logo (Sinistra) -------- Numero (Destra)
+htmlStats += `
+    <div class="stat-row" style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f9f9f9;">
+        <div style="display: flex; align-items: center; gap: 12px; flex: 1;">
+            <span class="stat-player" style="font-weight: 600; color: #444; font-size: 1rem;">${nome}</span>
+            ${logoHtml}
+        </div>
+        <span class="stat-value" style="font-weight: 800; color: #8b0000; font-size: 1.1rem;">${numero}</span>
+    </div>`;
                 }
                 htmlStats += `</div>`;
                 
