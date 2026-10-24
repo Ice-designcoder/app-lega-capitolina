@@ -56,7 +56,7 @@ function leggiCSV(testo) {
 // ==========================================
 // 2. COLLEGAMENTO DATABASE: CLASSIFICA
 // ==========================================
-const urlClassifica = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQSgZ0b-6wzTnNRq37OxOvEbVjyW-vNbuxR-sg6rToRvPAcg1NBtVr_54dTh5tmmCbHWDGPWsakZti0/pub?gid=0&single=true&output=csv"; // <--- 1. LINK CLASSIFICA
+const urlClassifica = `https://docs.google.com/spreadsheets/d/e/2PACX-1vQSgZ0b-6wzTnNRq37OxOvEbVjyW-vNbuxR-sg6rToRvPAcg1NBtVr_54dTh5tmmCbHWDGPWsakZti0/pub?gid=0&single=true&output=csv`; // <--- 1. LINK CLASSIFICA
 
 async function caricaClassifica() {
     try {
@@ -91,7 +91,7 @@ async function caricaClassifica() {
                 <div class="standings-row">
                     <div class="col-pos">${pos}</div>
                     <div class="col-team">
-                        <img src="img/${nomeLogo}" class="team-logo-small" alt="Stemma">
+                        <img src="img/${nomeLogo}?v=2" class="team-logo-small" alt="Stemma">
                         ${squadra.trim()}
                     </div>
                     <div class="col-pt">${pt}</div>
@@ -184,7 +184,7 @@ function mostraGiornata(indice) {
         htmlRisultati += `
             <div class="match-row" onclick="apriDettagli(${indice}, ${i})">
                 <div class="team team-home">
-                    <img src="img/${logoCasa}" class="team-logo" alt="Casa">
+                    <img src="img/${logoCasa}?v=2" class="team-logo" alt="Casa">
                     <div class="team-info">
                         <span class="team-name">${p.sqCasa.trim()}</span>
                         <span class="team-score">${p.golCasa}</span>
@@ -200,7 +200,7 @@ function mostraGiornata(indice) {
                         <span class="team-name">${p.sqTrasf.trim()}</span>
                         <span class="team-score">${p.golTrasf}</span>
                     </div>
-                    <img src="img/${logoTrasf}" class="team-logo" alt="Trasferta">
+                    <img src="img/${logoTrasf}?v=2" class="team-logo" alt="Trasferta">
                 </div>
             </div>`;
     });
@@ -320,7 +320,7 @@ async function caricaStatistiche() {
                     let logoHtml = "";
                     if (squadra !== "") {
                         const nomeLogo = squadra.toLowerCase().replace(/\s+/g, '') + '_logo.png';
-                        logoHtml = `<img src="img/${nomeLogo}" alt="${squadra}" style="width: 25px; height: 25px; object-fit: contain;">`;
+                        logoHtml = `<img src="img/${nomeLogo}?v=2" alt="${squadra}" style="width: 25px; height: 25px; object-fit: contain;">`;
                     }
 
                     htmlStats += `
