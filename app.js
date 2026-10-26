@@ -91,7 +91,7 @@ async function caricaClassifica() {
                 <div class="standings-row">
                     <div class="col-pos">${pos}</div>
                     <div class="col-team">
-                        <img src="img/${nomeLogo}?v=2" class="team-logo-small" alt="Stemma">
+                        <img src="img/${nomeLogo}" class="team-logo-small" alt="Stemma">
                         ${squadra.trim()}
                     </div>
                     <div class="col-pt">${pt}</div>
@@ -200,7 +200,7 @@ function mostraGiornata(indice) {
                         <span class="team-name">${p.sqTrasf.trim()}</span>
                         <span class="team-score">${p.golTrasf}</span>
                     </div>
-                    <img src="img/${logoTrasf}?v=2" class="team-logo" alt="Trasferta">
+                    <img src="img/${logoTrasf}" class="team-logo" alt="Trasferta">
                 </div>
             </div>`;
     });
@@ -320,7 +320,7 @@ async function caricaStatistiche() {
                     let logoHtml = "";
                     if (squadra !== "") {
                         const nomeLogo = squadra.toLowerCase().replace(/\s+/g, '') + '_logo.png';
-                        logoHtml = `<img src="img/${nomeLogo}?v=2" alt="${squadra}" style="width: 40px; height: 40px; object-fit: contain;">`;
+                        logoHtml = `<img src="img/${nomeLogo}" alt="${squadra}" style="width: 40px; height: 40px; object-fit: contain;">`;
                     }
 
                     // Impaginazione: Giocatore + Logo (Sinistra) -------- Numero (Destra)
