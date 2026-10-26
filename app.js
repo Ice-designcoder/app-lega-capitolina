@@ -90,7 +90,7 @@ async function caricaClassifica() {
             // --- REGOLA SPECIALE DIMENSIONI CLASSIFICA ---
             let sizeClassifica = "25px";
             if (nomeLogo === "sslazo_logo.png" || nomeLogo === "realmadrink_logo.png") {
-                sizeClassifica = "50px"; 
+                sizeClassifica = "30px"; 
             }
 
             htmlClassifica += `
