@@ -56,7 +56,7 @@ function leggiCSV(testo) {
 // ==========================================
 // 2. COLLEGAMENTO DATABASE: CLASSIFICA
 // ==========================================
-const urlClassifica = `https://docs.google.com/spreadsheets/d/e/2PACX-1vQSgZ0b-6wzTnNRq37OxOvEbVjyW-vNbuxR-sg6rToRvPAcg1NBtVr_54dTh5tmmCbHWDGPWsakZti0/pub?gid=0&single=true&output=csv`; // <--- 1. LINK CLASSIFICA
+const urlClassifica = `https://docs.google.com/spreadsheets/d/e/2PACX-1vQSgZ0b-6wzTnNRq37OxOvEbVjyW-vNbuxR-sg6rToRvPAcg1NBtVr_54dTh5tmmCbHWDGPWsakZti0/pub?gid=0&single=true&output=csv`;
 
 async function caricaClassifica() {
     try {
@@ -90,14 +90,14 @@ async function caricaClassifica() {
             // --- REGOLA SPECIALE DIMENSIONI CLASSIFICA ---
             let sizeClassifica = "25px";
             if (nomeLogo === "sslazo_logo.png" || nomeLogo === "realmadrink_logo.png" || nomeLogo === "teambarazzo_logo.png") {
-                sizeClassifica = "50px"; // Scegli tu la grandezza maggiorata
+                sizeClassifica = "50px"; 
             }
 
             htmlClassifica += `
                 <div class="standings-row">
                     <div class="col-pos">${pos}</div>
                     <div class="col-team" style="display: flex; align-items: center; gap: 8px;">
-                        <img src="img/${nomeLogo}?v=6" alt="Stemma" style="width: ${sizeClassifica}; height: ${sizeClassifica}; object-fit: contain;">
+                        <img src="img/${nomeLogo}?v=7" alt="Stemma" style="width: ${sizeClassifica}; height: ${sizeClassifica}; object-fit: contain;">
                         ${squadra.trim()}
                     </div>
                     <div class="col-pt">${pt}</div>
@@ -116,7 +116,7 @@ caricaClassifica();
 // ==========================================
 // 3. COLLEGAMENTO DATABASE: RISULTATI
 // ==========================================
-const urlRisultati = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQSgZ0b-6wzTnNRq37OxOvEbVjyW-vNbuxR-sg6rToRvPAcg1NBtVr_54dTh5tmmCbHWDGPWsakZti0/pub?gid=1987827721&single=true&output=csv"; // <--- 2. LINK RISULTATI
+const urlRisultati = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQSgZ0b-6wzTnNRq37OxOvEbVjyW-vNbuxR-sg6rToRvPAcg1NBtVr_54dTh5tmmCbHWDGPWsakZti0/pub?gid=1987827721&single=true&output=csv";
 
 let tutteLePartite = [];
 let giornateDisponibili = [];
@@ -202,7 +202,7 @@ function mostraGiornata(indice) {
         htmlRisultati += `
             <div class="match-row" onclick="apriDettagli(${indice}, ${i})">
                 <div class="team team-home">
-                    <img src="img/${logoCasa}?v=6" alt="Casa" style="width: ${sizeCasa}; height: ${sizeCasa}; object-fit: contain;">
+                    <img src="img/${logoCasa}?v=7" alt="Casa" style="width: ${sizeCasa}; height: ${sizeCasa}; object-fit: contain;">
                     <div class="team-info">
                         <span class="team-name">${p.sqCasa.trim()}</span>
                         <span class="team-score">${p.golCasa}</span>
@@ -218,7 +218,7 @@ function mostraGiornata(indice) {
                         <span class="team-name">${p.sqTrasf.trim()}</span>
                         <span class="team-score">${p.golTrasf}</span>
                     </div>
-                    <img src="img/${logoTrasf}?v=6" alt="Trasferta" style="width: ${sizeTrasf}; height: ${sizeTrasf}; object-fit: contain;">
+                    <img src="img/${logoTrasf}?v=7" alt="Trasferta" style="width: ${sizeTrasf}; height: ${sizeTrasf}; object-fit: contain;">
                 </div>
             </div>`;
     });
@@ -293,7 +293,7 @@ function gestisciSwipe() {
 // ==========================================
 // 5. COLLEGAMENTO DATABASE: STATISTICHE
 // ==========================================
-const urlStatistiche = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQSgZ0b-6wzTnNRq37OxOvEbVjyW-vNbuxR-sg6rToRvPAcg1NBtVr_54dTh5tmmCbHWDGPWsakZti0/pub?gid=2118793780&single=true&output=csv"; // <--- 3. LINK STATISTICHE
+const urlStatistiche = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQSgZ0b-6wzTnNRq37OxOvEbVjyW-vNbuxR-sg6rToRvPAcg1NBtVr_54dTh5tmmCbHWDGPWsakZti0/pub?gid=2118793780&single=true&output=csv"; 
 
 async function caricaStatistiche() {
     try {
@@ -343,25 +343,25 @@ async function caricaStatistiche() {
                         let logoWidth = "25px";
                         let logoHeight = "25px";
 
-                        // 2. Regola speciale: scrivi qui i nomi esatti dei due loghi piccoli
+                        // 2. Regola speciale: LA VIRGOLETTA ORA E' CORRETTA
                         if (nomeLogo === "sslazo_logo.png" || nomeLogo === "realmadrink_logo.png" || nomeLogo === "teambarazzo_logo.png") {
-                            logoWidth = "50px"; // <-- Scegli tu quanto farli grandi (es. 40px, 45px...)
+                            logoWidth = "50px";
                             logoHeight = "50px";
                         }
 
-                        // 3. Generiamo l'immagine con le misure dinamiche e il salva-cache aggiornato (v=5)
-                        logoHtml = `<img src="img/${nomeLogo}?v=5" alt="${squadra}" style="width: ${logoWidth}; height: ${logoHeight}; object-fit: contain;">`;
+                        // 3. Generiamo l'immagine con le misure dinamiche
+                        logoHtml = `<img src="img/${nomeLogo}?v=7" alt="${squadra}" style="width: ${logoWidth}; height: ${logoHeight}; object-fit: contain;">`;
                     }
 
                     // Impaginazione: Giocatore + Logo (Sinistra) -------- Numero (Destra)
-htmlStats += `
-    <div class="stat-row" style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f9f9f9;">
-        <div style="display: flex; align-items: center; gap: 12px; flex: 1;">
-            <span class="stat-player" style="font-weight: 600; color: #444; font-size: 1rem;">${nome}</span>
-            ${logoHtml}
-        </div>
-        <span class="stat-value" style="font-weight: 800; color: #8b0000; font-size: 1.1rem;">${numero}</span>
-    </div>`;
+                    htmlStats += `
+                        <div class="stat-row" style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f9f9f9;">
+                            <div style="display: flex; align-items: center; gap: 12px; flex: 1;">
+                                <span class="stat-player" style="font-weight: 600; color: #444; font-size: 1rem;">${nome}</span>
+                                ${logoHtml}
+                            </div>
+                            <span class="stat-value" style="font-weight: 800; color: #8b0000; font-size: 1.1rem;">${numero}</span>
+                        </div>`;
                 }
                 htmlStats += `</div>`;
                 
