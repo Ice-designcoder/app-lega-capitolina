@@ -189,13 +189,13 @@ function mostraGiornata(indice) {
 
         // --- REGOLA SPECIALE DIMENSIONI RISULTATI (Squadra in Casa) ---
         let sizeCasa = "35px"; 
-        if (logoCasa === "sslazo_logo.png" || logoCasa === "realmadrink_logo.png" || logoCasa === "teambarazzo_logo.png") { 
+        if (logoCasa === "sslazo_logo.png" || logoCasa === "realmadrink_logo.png") { 
             sizeCasa = "50px"; 
         }
 
         // --- REGOLA SPECIALE DIMENSIONI RISULTATI (Squadra in Trasferta) ---
         let sizeTrasf = "35px";
-        if (logoTrasf === "sslazo_logo.png" || logoTrasf === "realmadrink_logo.png" || logoTrasf === "teambarazzo_logo.png") { 
+        if (logoTrasf === "sslazo_logo.png" || logoTrasf === "realmadrink_logo.png") { 
             sizeTrasf = "50px"; 
         }
 
@@ -344,7 +344,7 @@ async function caricaStatistiche() {
                         let logoHeight = "25px";
 
                         // 2. Regola speciale: LA VIRGOLETTA ORA E' CORRETTA
-                        if (nomeLogo === "sslazo_logo.png" || nomeLogo === "realmadrink_logo.png" || nomeLogo === "teambarazzo_logo.png") {
+                        if (nomeLogo === "sslazo_logo.png" || nomeLogo === "realmadrink_logo.png") {
                             logoWidth = "50px";
                             logoHeight = "50px";
                         }
