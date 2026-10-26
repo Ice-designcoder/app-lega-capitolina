@@ -104,7 +104,7 @@ async function caricaClassifica() {
                     <div class="col-gf">${gf}</div>
                     <div class="col-gs">${gs}</div>
                     <div class="col-dr">${dr}</div>
-                </div>`;;
+                </div>`;
         }
         if(container) container.innerHTML = htmlClassifica;
     } catch (error) {
@@ -344,7 +344,7 @@ async function caricaStatistiche() {
                         let logoHeight = "25px";
 
                         // 2. Regola speciale: scrivi qui i nomi esatti dei due loghi piccoli
-                        if (nomeLogo === "sslazo_logo.png" || nomeLogo === "realmadrink_logo.png || nomeLogo === "teambarazzo_logo.png") {
+                        if (nomeLogo === "sslazo_logo.png" || nomeLogo === "realmadrink_logo.png" || nomeLogo === "teambarazzo_logo.png") {
                             logoWidth = "50px"; // <-- Scegli tu quanto farli grandi (es. 40px, 45px...)
                             logoHeight = "50px";
                         }
