@@ -326,9 +326,9 @@ async function caricaStatistiche() {
                         let logoHeight = "25px";
 
                         // 2. Regola speciale: scrivi qui i nomi esatti dei due loghi piccoli
-                        if (nomeLogo === "sslazo_logo.png" || nomeLogo === "realmadrink_logo.png") {
-                            logoWidth = "40px"; // <-- Scegli tu quanto farli grandi (es. 40px, 45px...)
-                            logoHeight = "40px";
+                        if (nomeLogo === "sslazo_logo.png" || nomeLogo === "realmadrink_logo.png || nomeLogo === "teambarazzo_logo.png") {
+                            logoWidth = "50px"; // <-- Scegli tu quanto farli grandi (es. 40px, 45px...)
+                            logoHeight = "50px";
                         }
 
                         // 3. Generiamo l'immagine con le misure dinamiche e il salva-cache aggiornato (v=5)
