@@ -190,13 +190,13 @@ function mostraGiornata(indice) {
         // --- REGOLA SPECIALE DIMENSIONI RISULTATI (Squadra in Casa) ---
         let sizeCasa = "35px"; 
         if (logoCasa === "sslazo_logo.png" || logoCasa === "realmadrink_logo.png" || logoCasa === "teambarazzo_logo.png") { 
-            sizeCasa = "70px"; 
+            sizeCasa = "50px"; 
         }
 
         // --- REGOLA SPECIALE DIMENSIONI RISULTATI (Squadra in Trasferta) ---
         let sizeTrasf = "35px";
         if (logoTrasf === "sslazo_logo.png" || logoTrasf === "realmadrink_logo.png" || logoTrasf === "teambarazzo_logo.png") { 
-            sizeTrasf = "70px"; 
+            sizeTrasf = "50px"; 
         }
 
         htmlRisultati += `
