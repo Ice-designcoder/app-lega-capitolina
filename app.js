@@ -86,19 +86,25 @@ async function caricaClassifica() {
             const dr = colonne[5];
             
             const nomeLogo = squadra.trim().toLowerCase().replace(/\s+/g, '') + '_logo.png';
+            
+            // --- REGOLA SPECIALE DIMENSIONI CLASSIFICA ---
+            let sizeClassifica = "25px";
+            if (nomeLogo === "sslazo_logo.png" || nomeLogo === "realmadrink_logo.png" || nomeLogo === "teambarazzo_logo.png") {
+                sizeClassifica = "50px"; // Scegli tu la grandezza maggiorata
+            }
 
             htmlClassifica += `
                 <div class="standings-row">
                     <div class="col-pos">${pos}</div>
-                    <div class="col-team">
-                        <img src="img/${nomeLogo}" class="team-logo-small" alt="Stemma">
+                    <div class="col-team" style="display: flex; align-items: center; gap: 8px;">
+                        <img src="img/${nomeLogo}?v=6" alt="Stemma" style="width: ${sizeClassifica}; height: ${sizeClassifica}; object-fit: contain;">
                         ${squadra.trim()}
                     </div>
                     <div class="col-pt">${pt}</div>
                     <div class="col-gf">${gf}</div>
                     <div class="col-gs">${gs}</div>
                     <div class="col-dr">${dr}</div>
-                </div>`;
+                </div>`;;
         }
         if(container) container.innerHTML = htmlClassifica;
     } catch (error) {
@@ -181,10 +187,22 @@ function mostraGiornata(indice) {
         const logoCasa = p.sqCasa.trim().toLowerCase().replace(/\s+/g, '') + '_logo.png';
         const logoTrasf = p.sqTrasf.trim().toLowerCase().replace(/\s+/g, '') + '_logo.png';
 
+        // --- REGOLA SPECIALE DIMENSIONI RISULTATI (Squadra in Casa) ---
+        let sizeCasa = "35px"; 
+        if (logoCasa === "sslazo_logo.png" || logoCasa === "realmadrink_logo.png" || logoCasa === "teambarazzo_logo.png") { 
+            sizeCasa = "70px"; 
+        }
+
+        // --- REGOLA SPECIALE DIMENSIONI RISULTATI (Squadra in Trasferta) ---
+        let sizeTrasf = "35px";
+        if (logoTrasf === "sslazo_logo.png" || logoTrasf === "realmadrink_logo.png" || logoTrasf === "teambarazzo_logo.png") { 
+            sizeTrasf = "70px"; 
+        }
+
         htmlRisultati += `
             <div class="match-row" onclick="apriDettagli(${indice}, ${i})">
                 <div class="team team-home">
-                    <img src="img/${logoCasa}?v=2" class="team-logo" alt="Casa">
+                    <img src="img/${logoCasa}?v=6" alt="Casa" style="width: ${sizeCasa}; height: ${sizeCasa}; object-fit: contain;">
                     <div class="team-info">
                         <span class="team-name">${p.sqCasa.trim()}</span>
                         <span class="team-score">${p.golCasa}</span>
@@ -200,7 +218,7 @@ function mostraGiornata(indice) {
                         <span class="team-name">${p.sqTrasf.trim()}</span>
                         <span class="team-score">${p.golTrasf}</span>
                     </div>
-                    <img src="img/${logoTrasf}" class="team-logo" alt="Trasferta">
+                    <img src="img/${logoTrasf}?v=6" alt="Trasferta" style="width: ${sizeTrasf}; height: ${sizeTrasf}; object-fit: contain;">
                 </div>
             </div>`;
     });
