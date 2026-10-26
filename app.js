@@ -320,7 +320,7 @@ async function caricaStatistiche() {
                     let logoHtml = "";
                     if (squadra !== "") {
                         const nomeLogo = squadra.toLowerCase().replace(/\s+/g, '') + '_logo.png';
-                        logoHtml = `<img src="img/${nomeLogo}" alt="${squadra}" style="width: 40px; height: 40px; object-fit: contain;">`;
+                        logoHtml = `<img src="img/${nomeLogo}" alt="${squadra}" style="width: 25px; height: 25px; object-fit: contain;">`;
                     }
 
                     // Impaginazione: Giocatore + Logo (Sinistra) -------- Numero (Destra)
